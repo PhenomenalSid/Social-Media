@@ -98,7 +98,7 @@ export const getPost = async (req, res, next) => {
     //     sort: "-_id",
     //   },
     // })
-    // .populate({
+    //  .populate({
     //   path: "comments",
     //   populate: {
     //     path: "replies.userId",

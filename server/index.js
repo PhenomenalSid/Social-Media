@@ -4,21 +4,24 @@ import cors from "cors";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import path from "path";
-//securty packges
 import helmet from "helmet";
 import dbConnection from "./dbConfig/index.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 import router from "./routes/index.js";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 const __dirname = path.resolve(path.dirname(""));
-
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
 
-app.use(express.static(path.join(__dirname, "views/build")));
-
-const PORT = process.env.PORT || 8800;
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
 
 dbConnection();
 
@@ -28,13 +31,32 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
-
 app.use(morgan("dev"));
-app.use(router);
+app.use(express.static(path.join(__dirname, "views/build")));
 
-//error middleware
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
+app.use(router);
 app.use(errorMiddleware);
 
-app.listen(PORT, () => {
+io.on("connection", (socket) => {
+  console.log("New client connected:", socket.id);
+
+  socket.on("joinRoom", ({ roomId }) => {
+    socket.join(roomId);
+    console.log(`Client joined room: ${roomId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected:", socket.id);
+  });
+});
+
+const PORT = process.env.PORT || 8080;
+
+httpServer.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
 });
