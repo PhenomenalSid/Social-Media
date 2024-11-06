@@ -25,6 +25,10 @@ export const register = async (req, res, next) => {
       email,
       password: hashedPassword,
     });
+
+    user.password = undefined;
+
+    res.status(201).json(user);
   } catch (error) {
     console.log(error);
     res.status(404).json({ message: error.message });

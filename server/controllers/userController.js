@@ -1,7 +1,7 @@
 import Users from "../models/userModel.js";
 import { createJWT, hashString } from "../utils/security.js";
 import FriendRequest from "../models/friendRequest.js";
-import { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 export const getUser = async (req, res, next) => {
   try {
@@ -81,6 +81,16 @@ export const friendRequest = async (req, res, next) => {
     const { userId } = req.body.user;
 
     const { requestTo } = req.body;
+
+    const user = await Users.findOne({
+      _id: userId,
+      friends: requestTo,
+    });
+
+    if (user) {
+      next("You are already friends!");
+      return;
+    }
 
     const requestExist = await FriendRequest.findOne({
       requestTo,
@@ -184,7 +194,7 @@ export const updateRequest = async (req, res, next) => {
       await friend.save();
     }
 
-    await FriendRequest.deleteOne({ id: rid });
+    await FriendRequest.deleteOne({ _id: rid });
 
     res.status(201).json({
       success: true,
