@@ -25,7 +25,6 @@ const userSchema = new mongoose.Schema(
     profileUrl: { type: String },
     profession: { type: String },
     friends: [{ type: Schema.Types.ObjectId, ref: "Users" }],
-    views: [{ type: String }],
   },
   { timestamps: true }
 );

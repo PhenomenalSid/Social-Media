@@ -1,6 +1,7 @@
 import Users from "../models/userModel.js";
-import { compareString, createJWT, hashString } from "../utils/security.js";
+import { createJWT, hashString } from "../utils/security.js";
 import FriendRequest from "../models/friendRequest.js";
+import { Schema } from "mongoose";
 
 export const getUser = async (req, res, next) => {
   try {
@@ -82,8 +83,8 @@ export const friendRequest = async (req, res, next) => {
     const { requestTo } = req.body;
 
     const requestExist = await FriendRequest.findOne({
-      requestFrom: userId,
       requestTo,
+      requestFrom: userId,
     });
 
     if (requestExist) {
@@ -151,7 +152,7 @@ export const getFriendRequest = async (req, res) => {
   }
 };
 
-export const acceptRequest = async (req, res, next) => {
+export const updateRequest = async (req, res, next) => {
   try {
     const id = req.body.user.userId;
 
@@ -183,6 +184,8 @@ export const acceptRequest = async (req, res, next) => {
       await friend.save();
     }
 
+    await FriendRequest.deleteOne({ id: rid });
+
     res.status(201).json({
       success: true,
       message: "Friend Request " + status,
@@ -207,11 +210,11 @@ export const suggestedFriends = async (req, res) => {
 
     queryObject.friends = { $nin: userId };
 
-    let queryResult = Users.find(queryObject)
+    let queryResult = await Users.find(queryObject)
       .limit(15)
-      .select("firstName lastName profileUrl profession -password");
+      .select("firstName lastName email profileUrl profession -password");
 
-    const suggestedFriends = await queryResult;
+    const suggestedFriends = queryResult;
 
     res.status(200).json({
       success: true,

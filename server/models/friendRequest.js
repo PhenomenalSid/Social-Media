@@ -4,7 +4,11 @@ const requestSchema = Schema(
   {
     requestTo: { type: Schema.Types.ObjectId, ref: "Users" },
     requestFrom: { type: Schema.Types.ObjectId, ref: "Users" },
-    requestStatus: { type: String, default: "Pending" },
+    requestStatus: {
+      type: String,
+      enum: ["Pending", "Accepted", "Declined"],
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );
