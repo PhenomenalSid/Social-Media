@@ -1,6 +1,5 @@
 import Users from "../models/userModel.js";
-import { compareString, createJWT, hashString } from "../utils/index.js";
-// import { sendVerificationEmail } from "../utils/sendEmail.js";
+import { compareString, createJWT, hashString } from "../utils/security.js";
 
 export const register = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -26,8 +25,6 @@ export const register = async (req, res, next) => {
       email,
       password: hashedPassword,
     });
-
-    // sendVerificationEmail(user, res);
   } catch (error) {
     console.log(error);
     res.status(404).json({ message: error.message });
@@ -52,13 +49,6 @@ export const login = async (req, res, next) => {
       next("Invalid email or password");
       return;
     }
-
-    // if (!user?.verified) {
-    //   next(
-    //     "User email is not verified. Check your email account and verify your email"
-    //   );
-    //   return;
-    // }
 
     const isMatch = await compareString(password, user?.password);
 

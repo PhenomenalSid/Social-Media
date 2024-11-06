@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Users from "./userModel.js";
+// import Users from "./userModel.js";
 
 const messageSchema = new mongoose.Schema({
   roomId: {

@@ -5,9 +5,9 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import path from "path";
 import helmet from "helmet";
-import dbConnection from "./dbConfig/index.js";
+import dbConnection from "./dbConfig/config.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
-import router from "./routes/index.js";
+import router from "./routes/routes.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 

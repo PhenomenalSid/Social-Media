@@ -88,23 +88,6 @@ export const getPost = async (req, res, next) => {
       path: "userId",
       select: "firstName lastName location profileUrl -password",
     });
-    // .populate({
-    //   path: "comments",
-    //   populate: {
-    //     path: "userId",
-    //     select: "firstName lastName location profileUrl -password",
-    //   },
-    //   options: {
-    //     sort: "-_id",
-    //   },
-    // })
-    //  .populate({
-    //   path: "comments",
-    //   populate: {
-    //     path: "replies.userId",
-    //     select: "firstName lastName location profileUrl -password",
-    //   },
-    // });
 
     res.status(200).json({
       sucess: true,
@@ -272,12 +255,11 @@ export const commentPost = async (req, res, next) => {
 
     await newComment.save();
 
-    //updating the post with the comments id
     const post = await Posts.findById(id);
 
     post.comments.push(newComment._id);
 
-    const updatedPost = await Posts.findByIdAndUpdate(id, post, {
+    await Posts.findByIdAndUpdate(id, post, {
       new: true,
     });
 

@@ -1,6 +1,5 @@
 import ChatRoom from "../models/chatroom.js";
 import Message from "../models/message.js";
-import UserModel from "../models/userModel.js";
 
 export const directMessaging = async (req, res, next) => {
   try {
