@@ -11,7 +11,6 @@ import router from "./routes/routes.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
-const __dirname = path.resolve(path.dirname(""));
 dotenv.config();
 
 const app = express();
@@ -32,7 +31,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use(express.static(path.join(__dirname, "views/build")));
 
 app.use((req, res, next) => {
   req.io = io;
