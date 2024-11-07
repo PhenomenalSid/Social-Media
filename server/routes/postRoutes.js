@@ -16,14 +16,14 @@ import {
 const router = express.Router();
 
 router.post("/create-post", userAuth, createPost);
-router.post("/", userAuth, getPosts);
-router.post("/:id", userAuth, getPost);
-router.post("/get-user-post/:id", userAuth, getUserPost);
+router.get("/get-posts", getPosts);
+router.get("/get-post/:id", getPost);
+router.get("/get-user-post/:id", getUserPost);
 router.get("/comments/:postId", getComments);
 router.post("/like/:id", userAuth, likePost);
 router.post("/like-comment/:id/:rid?", userAuth, likePostComment);
 router.post("/comment/:id", userAuth, commentPost);
 router.post("/reply-comment/:id", userAuth, replyPostComment);
-router.delete("/:id", userAuth, deletePost);
+router.delete("/delete-post/:id", userAuth, deletePost);
 
 export default router;

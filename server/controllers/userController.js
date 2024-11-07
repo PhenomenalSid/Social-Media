@@ -1,7 +1,6 @@
 import Users from "../models/userModel.js";
 import { createJWT, hashString } from "../utils/security.js";
 import FriendRequest from "../models/friendRequest.js";
-import mongoose from "mongoose";
 
 export const getUser = async (req, res, next) => {
   try {
