@@ -24,7 +24,7 @@ This is the backend for a social media application built using Node.js, Express,
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-username/social-media-app.git
+   git clone https://github.com/PhenomenalSid/Social-Media.git
    cd social-media-app
    ```
 
