@@ -8,8 +8,8 @@ This is the backend for a social media application built using Node.js, Express,
 - **Posts**: Users can create, update, delete, like, and unlike posts.
 - **Comments and Replies**: Users can comment on posts and reply to comments.
 - **Messaging**:
-  - **Direct Messaging**: Users can send direct messages to other users.
-  - **Group Chats**: Users can create group chats with multiple members.
+- **Direct Messaging**: Users can send direct messages to other users.
+- **Group Chats**: Users can create group chats with multiple members.
 
 ## Tech Stack
 
@@ -22,7 +22,24 @@ This is the backend for a social media application built using Node.js, Express,
 ## Installation and Setup
 
 1. **Clone the Repository**:
+
    ```bash
    git clone https://github.com/your-username/social-media-app.git
    cd social-media-app
+   ```
+
+2. **Install Dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Environment Variables**:
+
+   Create a .env file in the root directory and add the environment variables provided in **.env.example** file.
+
+4. **Start the Server**:
+
+   ```bash
+   npm start
    ```
