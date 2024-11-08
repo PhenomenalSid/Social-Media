@@ -20,9 +20,9 @@ router.get("/get-posts", getPosts);
 router.get("/get-post/:id", getPost);
 router.get("/get-user-post/:id", getUserPost);
 router.get("/comments/:postId", getComments);
+router.post("/comment/:id", userAuth, commentPost);
 router.post("/like/:id", userAuth, likePost);
 router.post("/like-comment/:id/:rid?", userAuth, likePostComment);
-router.post("/comment/:id", userAuth, commentPost);
 router.post("/reply-comment/:id", userAuth, replyPostComment);
 router.delete("/delete-post/:id", userAuth, deletePost);
 

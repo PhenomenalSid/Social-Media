@@ -148,6 +148,35 @@ export const getComments = async (req, res, next) => {
   }
 };
 
+export const commentPost = async (req, res, next) => {
+  try {
+    const { comment, from } = req.body;
+    const { userId } = req.body.user;
+    const { id } = req.params;
+
+    if (comment === null) {
+      return res.status(404).json({ message: "Comment is required." });
+    }
+
+    const newComment = new Comments({ comment, from, userId, postId: id });
+
+    await newComment.save();
+
+    const post = await Posts.findById(id);
+
+    post.comments.push(newComment._id);
+
+    await Posts.findByIdAndUpdate(id, post, {
+      new: true,
+    });
+
+    res.status(201).json(newComment);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const likePost = async (req, res, next) => {
   try {
     const { userId } = req.body.user;
@@ -241,35 +270,6 @@ export const likePostComment = async (req, res, next) => {
   }
 };
 
-export const commentPost = async (req, res, next) => {
-  try {
-    const { comment, from } = req.body;
-    const { userId } = req.body.user;
-    const { id } = req.params;
-
-    if (comment === null) {
-      return res.status(404).json({ message: "Comment is required." });
-    }
-
-    const newComment = new Comments({ comment, from, userId, postId: id });
-
-    await newComment.save();
-
-    const post = await Posts.findById(id);
-
-    post.comments.push(newComment._id);
-
-    await Posts.findByIdAndUpdate(id, post, {
-      new: true,
-    });
-
-    res.status(201).json(newComment);
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({ message: error.message });
-  }
-};
-
 export const replyPostComment = async (req, res, next) => {
   const { userId } = req.body.user;
   const { comment, replyAt, from } = req.body;
@@ -302,6 +302,19 @@ export const replyPostComment = async (req, res, next) => {
 export const deletePost = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { userId } = req.body.user;
+
+    const post = await Posts.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.userId.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to delete this post" });
+    }
 
     await Posts.findByIdAndDelete(id);
 
@@ -310,7 +323,7 @@ export const deletePost = async (req, res, next) => {
       message: "Deleted successfully",
     });
   } catch (error) {
-    console.log(error);
-    res.status(404).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: error.message });
   }
 };
