@@ -25,7 +25,7 @@ This is the backend for a social media application built using Node.js, Express,
 
    ```bash
    git clone https://github.com/PhenomenalSid/Social-Media.git
-   cd social-media-app
+   cd server
    ```
 
 2. **Install Dependencies**:
